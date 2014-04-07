@@ -4,6 +4,7 @@
 import requests
 from flask import Blueprint, request, url_for, redirect, g, jsonify, render_template, session
 from instagram import client
+from instagram.oauth2 import OAuth2AuthExchangeError
 
 
 CONFIG = {
@@ -40,10 +41,13 @@ def oauth2_callback():
     request_code = request.args.get('code')
     if not request_code:
         return 'Missing request_code from instagram', 400
-    access_token, user_info = api.exchange_code_for_access_token(request_code)
+    try:
+        access_token, user_info = api.exchange_code_for_access_token(request_code)
+    except OAuth2AuthExchangeError:
+        return 'Could not login to instagram <br/>Click <a href="/account/login"> here </a> to retry the login process.'
 
     if not access_token:
         return 'could not get access token', 200
     session['access_token'] = access_token
     session['user'] = user_info
-    return 'Your access token is %s.<br/>Click <a href="/views?access_token=%s">here</a> to download your photos may take a while.' % (access_token, access_token)
+    return 'Your access token is %s.<br/>Click <a href="/views/download_photos">here</a> to download your photos may take a while.' % (access_token)
