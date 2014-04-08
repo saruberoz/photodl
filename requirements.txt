@@ -3,3 +3,4 @@ python-instagram
 httplib2
 simplejson
 requests
+gunicorn
