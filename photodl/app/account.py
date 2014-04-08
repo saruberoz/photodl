@@ -2,7 +2,7 @@
 
 # External Imports
 import requests
-from flask import Blueprint, request, url_for, redirect, g, jsonify, render_template, session
+from flask import Blueprint, request, url_for, redirect, g, jsonify, render_template, session, flash
 from instagram import client
 from instagram.oauth2 import OAuth2AuthExchangeError
 
@@ -21,20 +21,16 @@ account = Blueprint('account', __name__)
 @account.route('/')
 @account.route('/login')
 def login():
-    try:
-        # scope = request.args('scope', )
-        scope = ['basic', 'comments', 'relationships', 'likes']
-        url = api.get_authorize_url(scope=scope)
-        return '<a href="%s">Connect with Instagram</a>' % url
-    except Exception as e:
-        print e
-
+    scope = ['basic', 'comments', 'relationships', 'likes']
+    url = api.get_authorize_url(scope=scope)
+    # return '<a href="%s">Connect with Instagram</a>' % url
+    return redirect(url)
 
 @account.route('/logout')
 def logout():
     del session['access_token']
-    del session['user_info']
-    return 'you are logged out'
+    del session['user']
+    return render_template('index.html')
 
 @account.route('/oauth2_callback')
 def oauth2_callback():
@@ -44,10 +40,15 @@ def oauth2_callback():
     try:
         access_token, user_info = api.exchange_code_for_access_token(request_code)
     except OAuth2AuthExchangeError:
-        return 'Could not login to instagram <br/>Click <a href="/account/login"> here </a> to retry the login process.'
+        flash('Could not login to instagram')
+        return render_template('index.html')
+        # return 'Could not login to instagram <br/>Click <a href="/account/login"> here </a> to retry the login process.'
 
     if not access_token:
         return 'could not get access token', 200
     session['access_token'] = access_token
     session['user'] = user_info
-    return 'Your access token is %s.<br/>Click <a href="/views/download_photos">here</a> to download your photos may take a while.' % (access_token)
+    print access_token
+    flash('You are now logged in using instagram oauth')
+    return redirect(url_for('views.get_user_photos'))
+    # return 'Your access token is %s.<br/>Click <a href="/views/download_photos">here</a> to download your photos may take a while.' % (access_token)

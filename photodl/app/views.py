@@ -19,7 +19,6 @@ def get_instagram_user_id():
     response = requests.get(url)
     return jsonify(data=response.text)
 
-
 @views.route('/get_tags_search')
 def get_tags_search():
     # tags = request.args.get('tags')
@@ -30,9 +29,10 @@ def get_tags_search():
 
 @views.route('/get_user_photos')
 def get_user_photos():
+    count = request.args.get('count', 100)
     if 'access_token' in session and 'user' in session:
         api = InstagramAPI(access_token=session['access_token'])
-        recent_media, next = api.user_recent_media(user_id=session['user'].get('id'), count=5)
+        recent_media, next = api.user_recent_media(user_id=session['user'].get('id'), count=count)
 
         templateData = {
             'size':request.args.get('size', 'thumb'),

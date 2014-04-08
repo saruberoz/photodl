@@ -3,7 +3,7 @@
 __author__ = 'wilson.sumanang@gmail.com'
 
 # External Imports
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 
 # Internal Imports
 from app.views import views
@@ -29,7 +29,10 @@ def create_flask_app():
     @app.route('/')
     @app.route('/index')
     def index():
-        return render_template('index.html')
+        if 'access_token' not in session:
+            return render_template('index.html')
+        flash('you are already signed-in')
+        return redirect(url_for('views.get_user_photos'))
 
     @app.errorhandler(404)
     def page_not_found(error):

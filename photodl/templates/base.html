@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
     <title>photodl app</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
@@ -14,6 +20,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css" type="text/css"></head>
     <link href="{{url_for('static', filename='css/custom.css')}}" rel='stylesheet' type='text/css'>
+    {% block extra_css %}{% endblock extra_css %}
 
 <body>
 
@@ -33,9 +40,14 @@
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="/account/">Social Network Login</a></li>
-              <li><a href="/views">Social Network Media List</a></li>
+              <li><a href="#">Home</a></li>
+              <li><a href="/views/get_user_photos">Media List</a></li>
+              {% if 'access_token' in session %}
+                  <li><a href="{{ url_for('account.logout') }}">Logout</a></li>
+                {% endif %}
+              {% if 'access_token' not in session %}
+                  <li><a href="{{ url_for('account.login') }}">Login</a></li>
+              {% endif %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -59,12 +71,13 @@
 
 
     <!-- Js Files-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="https:////cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" type="text/javascript" charset="utf-8"></script>
     <!-- Latest compiled and minified Bootstrap JavaScript -->
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
     <!-- Custom Js -->
     <script src="js/custom.js" type="text/javascript" charset="utf-8"></script>
+    {% block extra_js %}{% endblock extra_js %}
 </body>
 </html>

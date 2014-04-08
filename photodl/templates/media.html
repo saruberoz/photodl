@@ -1,43 +1,47 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 
 {% block body %}
-<div class="row">
-	<div class="col-md-12">
+<div class="container">
 
+	<div class="row">
+		<div class="col-md-12">
 
-		{% if size == 'big'%}
-		<a href="/">View thumbnails</a>
-		{% else %}
-		<a href="/?size=big">View large photos</a>
-		{% endif %}
-
-		<hr>
-
-
-		{% for m in media %}
 
 			{% if size == 'big'%}
-			<p>
-				<img src="{{m.images['standard_resolution'].url}}" alt="{{m.caption.text}}">
-				<br>
-				{{m.caption.text}}
-				<br>
-				<small><a href="{{m.link}}">view on instagram</a></small>
-			</p>
-
+			<a href="/">View thumbnails</a>
 			{% else %}
-
-				<div class="col-sm-6 col-md-2">
-					<a href="{{m.link}}" class="thumbnail">
-						<img src="{{m.images['thumbnail'].url}}" alt="{{m.caption.text}}">
-					</a>
-				</div>
+<!-- 			<a href="/?size=big">View large photos</a> -->
 			{% endif %}
 
-		{% endfor %}
+			<hr>
+
+
+			{% for m in media %}
+				{% if size == 'big'%}
+				<p>
+					<img src="{{m.images['standard_resolution'].url}}" alt="{{m.caption.text}}">
+					<br>
+					{{m.caption.text}}
+					<br>
+					<small><a href="{{m.link}}">view on instagram</a></small>
+				</p>
+
+				{% else %}
+
+					<div class="col-sm-6 col-md-2">
+						<a href="{{m.link}}" class="thumbnail">
+							<img src="{{m.images['thumbnail'].url}}" alt="{{m.caption.text}}">
+						</a>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+		{% block extra_js %}
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		{% endblock extra_js %}
 	</div>
-
-
 </div>
 
 {% endblock %}
