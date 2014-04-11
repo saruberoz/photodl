@@ -13,6 +13,7 @@ photodl:
     DEBUG: false
     TESTING: true
     SECRET_KEY: backup-thing-before-you-lost-it
+    SERVER_NAME: 0.0.0.0:5001
   instagram:
     client_id: CHANGE_ME_IN_SETTINGS_YML
     client_secret: CHANGE_ME_IN_SETTINGS_YML
