@@ -41,3 +41,4 @@ grunt_build/built
 grunt_build/almost_built
 .sass-cache
 
+photodl/settings.yml
