@@ -58,18 +58,20 @@ def logout():
 def oauth2_callback():
     request_code = request.args.get('code')
     if not request_code:
-        return 'Missing request_code from instagram', 400
+        flash('missing request code from instagram')
+        return redirect(url_for('index'))
     try:
         access_token, user_info = \
             api.exchange_code_for_access_token(request_code)
     except OAuth2AuthExchangeError:
         flash('Could not login to instagram')
-        return render_template('index.html')
+        return redirect(url_for('index'))
 
     if not access_token:
-        return 'could not get access token', 200
+        flash('could not get access token')
+        return redirect(url_for('index'))
     session['access_token'] = access_token
     session['user'] = user_info
     print access_token
     flash('You are now logged in using instagram oauth')
-    return redirect(url_for('views.get_user_photos'))
+    return redirect(url_for('index'))
