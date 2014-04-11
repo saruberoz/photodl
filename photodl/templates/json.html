@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row-fluid">
+        <pre id='json'></pre>
+    </div>
+</div>
+    {% block extra_js %}
+    <script>
+        var data = {{ data | safe }};
+        document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+    </script>
+
+    {% endblock extra_js %}
+{% endblock %}

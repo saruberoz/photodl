@@ -16,18 +16,24 @@ views = Blueprint('views', __name__)
 
 @views.route('/media_by_hashtag')
 @instagram_login_required
-def media_by_hashtag():
-    hashtag = request.args.get('hashtag', 'gamer')
+def get_media_by_hashtag():
+    hashtag = request.args.get('hashtag', 'bunny')
     url = 'https://api.instagram.com/v1/tags/{hashtag}/media/recent?access_token={access_token}'.format(hashtag = hashtag, access_token=session['access_token'])
     response = requests.get(url)
-    return jsonify(data=json.loads(response.text))
+    templateData = {
+        'data':response.text
+    }
+    return render_template('json.html', **templateData)
 
 @views.route('/followed_by')
 @instagram_login_required
-def followed_by():
+def get_user_followed_by():
+    json_data = request.args.get('json', False)
     url = 'https://api.instagram.com/v1/users/3/followed-by?access_token={access_token}'.format(access_token=session['access_token'])
     response = requests.get(url)
-    return jsonify(data=json.loads(response.text))
+    if json_data:
+        return jsonify(data=json.loads(response.text))
+    return render_template('json.html', data=response.text)
 
 @views.route('/get_user_info')
 @instagram_login_required
@@ -46,73 +52,3 @@ def get_instagram_user_info():
         'bio':data['data'][0]['bio']
     }
     return render_template('user.html', **templateData)
-
-
-@views.route('/get_user_photos')
-@instagram_login_required
-def get_user_photos():
-    count = request.args.get('count', MAX_COUNT)
-    api = InstagramAPI(access_token=session['access_token'])
-    recent_media, next = api.user_recent_media(user_id=session['user'].get('id'), count=count)
-
-    templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
-    }
-
-    return render_template('media.html', **templateData)
-
-@views.route('/search_by_hashtag')
-@instagram_login_required
-def search_by_hashtag():
-    hashtag = request.args.get('hashtag', 'gamer')
-    count = request.args.get('count', MAX_COUNT)
-    api = InstagramAPI(access_token=session['access_token'])
-    recent_media, next = api.tag_recent_media(count, 0, hashtag)
-    templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
-    }
-    return render_template('media.html', **templateData)
-
-@views.route('/user_media_feed')
-@instagram_login_required
-def get_user_media_feed():
-    api = InstagramAPI(access_token=session['access_token'])
-    recent_media, next = api.user_media_feed()
-
-    templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
-    }
-
-    return render_template('media.html', **templateData)
-
-
-@views.route('/download_photos')
-@instagram_login_required
-def downloads_photos():
-    # Open StringIO to grab in memory ZIP contents
-    zip_mem = BytesIO()
-    zipFile = zipfile.ZipFile(zip_mem, 'w')
-
-    api = InstagramAPI(access_token=session['access_token'])
-    recent_media, next = api.user_recent_media()
-
-    for media in recent_media:
-        f_name = media.images['standard_resolution'].url.rsplit('/', 1)[1]
-        r = requests.get(media.images['standard_resolution'].url, stream=True)
-        if r.status_code == 200:
-            with BytesIO() as img_mem:
-                for chunk in r.iter_content(1024 * 10):
-                    img_mem.write(chunk)
-                print "Adding:", f_name
-                zipFile.writestr(f_name, img_mem.getvalue())
-
-    zipFile.close()
-    zip_mem.seek(0)
-
-    return send_file(zip_mem,
-                     mimetype="application/zip",
-                     attachment_filename="instagram.zip",
-                     as_attachment=True)
