@@ -3,15 +3,13 @@
 # External Imports
 from datetime import datetime
 import requests
-import urllib
 import zipfile
-from flask import Blueprint, request, redirect, jsonify, render_template, url_for, session, send_file, make_response
+from flask import Blueprint, request, render_template, session, send_file
 from instagram.client import InstagramAPI
 from io import BytesIO
 from account import instagram_login_required
-import json
 
-MAX_COUNT=30
+MAX_COUNT = 30
 MAX_ID = 0
 
 media = Blueprint('media', __name__)
@@ -20,10 +18,6 @@ media = Blueprint('media', __name__)
 @media.route('/most_popular')
 @instagram_login_required
 def get_most_popular():
-    # # get in json format
-    # url = 'https://api.instagram.com/v1/media/popular?access_token={access_token}'.format(access_token=session['access_token'])
-    # response = requests.get(url)
-    # return jsonify(data=json.loads(response.text))
     count = request.args.get('count', MAX_COUNT)
     max_id = request.args.get('max_id', MAX_ID)
 
@@ -31,8 +25,8 @@ def get_most_popular():
     recent_media = api.media_popular(count, max_id)
 
     templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
+        'size': request.args.get('size', 'thumb'),
+        'media': recent_media
     }
 
     return render_template('media.html', **templateData)
@@ -43,14 +37,16 @@ def get_most_popular():
 def get_user_photos():
     count = request.args.get('count', MAX_COUNT)
     api = InstagramAPI(access_token=session['access_token'])
-    recent_media, next = api.user_recent_media(user_id=session['user'].get('id'), count=count)
+    recent_media, next = \
+        api.user_recent_media(user_id=session['user'].get('id'), count=count)
 
     templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
+        'size': request.args.get('size', 'thumb'),
+        'media': recent_media
     }
 
     return render_template('media.html', **templateData)
+
 
 @media.route('/search_by_hashtag')
 @instagram_login_required
@@ -60,10 +56,11 @@ def search_by_hashtag():
     api = InstagramAPI(access_token=session['access_token'])
     recent_media, next = api.tag_recent_media(count, MAX_ID, hashtag)
     templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
+        'size': request.args.get('size', 'thumb'),
+        'media': recent_media
     }
     return render_template('media.html', **templateData)
+
 
 @media.route('/user_media_feed')
 @instagram_login_required
@@ -72,8 +69,8 @@ def get_user_media_feed():
     recent_media, next = api.user_media_feed()
 
     templateData = {
-        'size':request.args.get('size', 'thumb'),
-        'media':recent_media
+        'size': request.args.get('size', 'thumb'),
+        'media': recent_media
     }
 
     return render_template('media.html', **templateData)

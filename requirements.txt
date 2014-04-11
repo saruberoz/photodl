@@ -4,3 +4,4 @@ httplib2
 simplejson
 requests
 gunicorn
+layered-yaml-attrdict-config
