@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -52,7 +49,7 @@
                                 <li><a href="/media/user_media_feed">User Media Feed</a></li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">View</li>
-                                <li><a href="/views/get_user_info">Get User Info</a></li>
+                                <li><a href="/views/get_user_info?username=bunnymama">Get User Info</a></li>
                                 <li><a href="/views/media_by_hashtag">Media by Hashtag</a></li>
                                 <li><a href="/views/followed_by">User followed by</a></li>
                             </ul>
@@ -60,7 +57,12 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if 'access_token' in session %}
-                            <li><a href="/media/download_photos">Download your photos</a></li>
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Download your media<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/media/download_photos"><i class="fa fa-instagram"></i> photos</a></li>
+                                    <li><a href="#"><i class="fa fa-facebook"></i> photos</a></li>
+                                </ul>
+                            </li>
                             <li><a href="{{ url_for('account.logout') }}"><i class="fa fa-instagram"></i> Logout</a></li>
                         {% endif %}
                         {% if 'access_token' not in session %}
@@ -74,14 +76,15 @@
     </div> <!-- /container -->
 
     {% block body %}{% endblock %}
+    <p>
 
-
-    <div id="footer" class="container-fluid">
-        <nav class="navbar-brand navbar-default navbar-fixed-bottom">
+    </p>
+    <div id="footer">
+        <div class="container navbar-fixed-bottom">
             <div class="navbar-content-center">
-                <p class="muted credit">App &copy; <a href="http://saruberoz.github.io">Wilson Sumanang</a> and <a href="http://github.com/KyleJamesWalker">Kyle Walker</a>.</p>
+                <p class="text-muted">App &copy; <a href="http://saruberoz.github.io">Wilson Sumanang</a> and <a href="http://github.com/KyleJamesWalker">Kyle Walker</a>.</p>
             </div>
-        </nav>
+        </div>
     </div>
 
     <!-- Js Files-->
