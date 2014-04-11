@@ -3,17 +3,32 @@
 __author__ = 'wilson.sumanang@gmail.com'
 
 # External Imports
-from flask import Flask, render_template, session, redirect, url_for, flash
+import os
+
+from flask import (
+    Flask,
+    render_template,
+    session,
+    redirect,
+    url_for,
+    flash
+)
 
 # Internal Imports
 from app.account import account
 from app.media import media
 from app.views import views
 
+app_dir = os.path.dirname(os.path.realpath(__file__))
+
 
 def create_flask_app():
     app = Flask(__name__)
-    app.config.from_pyfile("settings.py")
+
+    server_settings = get_config(app_dir, 'photodl')
+    app.config['server_settings'] = server_settings
+    app.config.update(**server_settings.flask_config)
+
     app.register_blueprint(account, url_prefix='/account')
     app.register_blueprint(views, url_prefix='/views')
     app.register_blueprint(media, url_prefix='/media')

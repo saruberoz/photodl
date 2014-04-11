@@ -3,6 +3,7 @@
 # External Imports
 from flask import (
     Blueprint,
+    current_app,
     request,
     url_for,
     redirect,
@@ -10,20 +11,22 @@ from flask import (
     session,
     flash
 )
+from functools import wraps
 from instagram import client
 from instagram.oauth2 import OAuth2AuthExchangeError
-from functools import wraps
 
-CONFIG = {
-    'client_id': 'ea2ea54c662c4a8ba136adb5e2c25a7a',
-    'client_secret': '6ba5cd189f114dc9975596a10b2f76f0',
-    'redirect_uri': 'http://localhost:5001/account/oauth2_callback'
-    # 'redirect_uri': 'http://photodl.herokuapp.com/'
-}
+api = None
 
-api = client.InstagramAPI(**CONFIG)
 
-account = Blueprint('account', __name__)
+class AccountBlueprint(Blueprint):
+    def register(self, app, options, first_registration=False):
+        global api
+        api = client.InstagramAPI(**app.config['server_settings'].instagram)
+
+        super(AccountBlueprint,
+              self).register(app, options, first_registration)
+
+account = AccountBlueprint('account', __name__)
 
 def instagram_login_required(f):
     @wraps(f)
