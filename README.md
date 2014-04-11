@@ -25,5 +25,8 @@ Guide to run the App
 
   * Create a new virtualenv, and activate it
   * Run `pip install -Ur requirements.txt`
-  * Do `python run_app.py` to run the file and host it on local server on port 5001
+  * Create `photodl/settings.yml` or environment variable based on default config on `photodl/defaults.yml`
+      * Make sure to update instagram setting with you personal `client_id` and `client_secret`
+        get it from `http://instagram.com/developer/`
+  * Do `python run_app.py` to run the app and which get hosted on local server on port 5001
   * Try visiting `http://localhost:5001` in your browser
