@@ -39,27 +39,29 @@
             <a class="navbar-brand" href="#">photodl app</a>
           </div>
           <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar">
+                <li><a href="#">Home</a></li>
+                <li><a href="/views/get_user_photos">Your Media List</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">More Menu <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('views.search_by_hashtag') }}">Search by hashtag</a></li>
+                    <li><a href="#">User Media Feed</a></li>
+                    <li><a href="#">Get User Info</a></li>
+                    <!-- <li class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li> -->
+                  </ul>
+                </li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Home</a></li>
-              <li><a href="/views/get_user_photos">Media List</a></li>
               {% if 'access_token' in session %}
                   <li><a href="{{ url_for('account.logout') }}">Logout</a></li>
                 {% endif %}
               {% if 'access_token' not in session %}
                   <li><a href="{{ url_for('account.login') }}">Login</a></li>
               {% endif %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

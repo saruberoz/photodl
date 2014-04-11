@@ -5,7 +5,7 @@ import requests
 from flask import Blueprint, request, url_for, redirect, g, jsonify, render_template, session, flash
 from instagram import client
 from instagram.oauth2 import OAuth2AuthExchangeError
-
+from functools import wraps
 
 CONFIG = {
     'client_id': 'ea2ea54c662c4a8ba136adb5e2c25a7a',
@@ -17,6 +17,16 @@ CONFIG = {
 api = client.InstagramAPI(**CONFIG)
 
 account = Blueprint('account', __name__)
+
+def instagram_login_required(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        access_token = session.get('access_token', None)
+        if not access_token:
+            return redirect(url_for('account.login'))
+        else:
+            return f(*args, **kwargs)
+    return decorator
 
 @account.route('/')
 @account.route('/login')
