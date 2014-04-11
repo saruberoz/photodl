@@ -5,19 +5,13 @@ __author__ = 'wilson.sumanang@gmail.com'
 # External Imports
 import os
 
-from flask import (
-    Flask,
-    render_template,
-    session,
-    redirect,
-    url_for,
-    flash
-)
+from flask import Flask, render_template, session, flash
 
 # Internal Imports
 from app.account import account
 from app.media import media
 from app.views import views
+from photodl.settings import get_config
 
 app_dir = os.path.dirname(os.path.realpath(__file__))
 

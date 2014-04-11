@@ -3,7 +3,6 @@
 # External Imports
 from flask import (
     Blueprint,
-    current_app,
     request,
     url_for,
     redirect,
@@ -27,6 +26,7 @@ class AccountBlueprint(Blueprint):
               self).register(app, options, first_registration)
 
 account = AccountBlueprint('account', __name__)
+
 
 def instagram_login_required(f):
     @wraps(f)
