@@ -4,7 +4,6 @@ __author__ = 'wilson.sumanang@gmail.com'
 
 # External Imports
 import os
-
 from flask import Flask, render_template, session, flash
 
 # Internal Imports

@@ -1,5 +1,10 @@
+#! /usr/bin/env python
+
+# External Imports
 import lya
 import os
+
+__author__ = 'kyle.walker@zefr.com'
 
 
 def get_connection_string(settings, psycopg2_format=False):

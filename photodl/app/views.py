@@ -1,10 +1,12 @@
 #! /usr/bin/env python
 
 # External Imports
+import json
 import requests
 from flask import Blueprint, request, jsonify, render_template, session
+
+# Internal Imports
 from account import instagram_login_required
-import json
 
 MAX_COUNT = 30
 

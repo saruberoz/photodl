@@ -5,8 +5,10 @@ from datetime import datetime
 import requests
 import zipfile
 from flask import Blueprint, request, render_template, session, send_file
-from instagram.client import InstagramAPI
 from io import BytesIO
+from instagram.client import InstagramAPI
+
+# Internal Imports
 from account import instagram_login_required
 
 MAX_COUNT = 30
