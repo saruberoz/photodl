@@ -8,7 +8,8 @@
     <title>photodl app</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 
     <!-- Fonts -->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +46,8 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-header">Media</li>
-                                <li><a href="{{ url_for('media.search_by_hashtag') }}">Search by hashtag</a></li>
+                                <!--<li><a href="{{ url_for('media.search_by_hashtag') }}">Search by hashtag</a></li> -->
+                                <li><a href="/media/search_by_hashtag?hashtag=bunnymama">Search by hashtag</a></li>
                                 <li><a href="/media/user_media_feed">User Media Feed</a></li>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">View</li>
@@ -82,7 +84,7 @@
     <div id="footer">
         <div class="container navbar-fixed-bottom">
             <div class="navbar-content-center">
-                <p class="text-muted">App &copy; <a href="http://saruberoz.github.io">Wilson Sumanang</a> and <a href="http://github.com/KyleJamesWalker">Kyle Walker</a>.</p>
+                <p class="text-muted">App made by <a href="http://saruberoz.github.io">Wilson Sumanang</a> with help of <a href="http://github.com/KyleJamesWalker">Kyle Walker</a> &copy;.</p>
             </div>
         </div>
     </div>
