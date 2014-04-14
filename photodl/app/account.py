@@ -16,16 +16,14 @@ from instagram.oauth2 import OAuth2AuthExchangeError
 
 api = None
 
+account = Blueprint('account', __name__)
 
-class AccountBlueprint(Blueprint):
-    def register(self, app, options, first_registration=False):
-        global api
-        api = client.InstagramAPI(**app.config['server_settings'].instagram)
 
-        super(AccountBlueprint,
-              self).register(app, options, first_registration)
-
-account = AccountBlueprint('account', __name__)
+@account.record
+def record_instagram(setup_state):
+    global api
+    app = setup_state.app
+    api = client.InstagramAPI(**app.config['server_settings'].instagram)
 
 
 def instagram_login_required(f):
@@ -49,9 +47,10 @@ def login():
 
 @account.route('/logout')
 def logout():
-    del session['access_token']
-    del session['user']
-    return render_template('index.html')
+    if 'access_token' in session:
+        del session['access_token']
+        del session['user']
+    return redirect(url_for('index'))
 
 
 @account.route('/oauth2_callback')
