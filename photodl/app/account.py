@@ -47,9 +47,10 @@ def login():
 
 @account.route('/logout')
 def logout():
-    del session['access_token']
-    del session['user']
-    return render_template('index.html')
+    if 'access_token' in session:
+        del session['access_token']
+        del session['user']
+    return redirect(url_for('index'))
 
 
 @account.route('/oauth2_callback')
